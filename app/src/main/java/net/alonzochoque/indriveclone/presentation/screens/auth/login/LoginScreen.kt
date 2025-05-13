@@ -20,7 +20,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,9 +44,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.alonzochoque.indriveclone.R
+import net.alonzochoque.indriveclone.presentation.components.DefaultTextField
 
 @Composable
 fun LoginScreen() {
@@ -103,61 +112,105 @@ fun LoginScreen() {
                     )
             ) {
                 Column(
-                    modifier = Modifier.statusBarsPadding()
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .padding(start = 25.dp)
                 ) {
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "Welcome",
                         color = Color.White,
-                        fontSize = 30.sp,
+                        fontSize = 35.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = "back...",
                         color = Color.White,
-                        fontSize = 30.sp,
+                        fontSize = 35.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Image(
-                        modifier = Modifier.size(150.dp),
-                        painter = painterResource(id = R.drawable.car_white),
-                        contentDescription = ""
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 15.dp)
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(150.dp)
+                                .align(Alignment.CenterEnd),
+                            painter = painterResource(id = R.drawable.car_white),
+                            contentDescription = ""
+                        )
+                    }
                     Text(
                         text = "Log in",
                         color = Color.White,
                         fontSize = 27.sp,
                         fontWeight = FontWeight.Bold
                     )
-
-                    TextField(
+                    Spacer(modifier = Modifier.height(40.dp))
+//                    TextField(
+//                        value = email,
+//                        onValueChange = {
+//                            email = it
+//                        },
+//                        label = {
+//                            Text(text = "Email")
+//                        }
+//                    )
+                    DefaultTextField(
+                        modifier = Modifier,
                         value = email,
+                        label = "Email",
+                        icon = Icons.Outlined.Email,
+                        keyboardType = KeyboardType.Email,
                         onValueChange = {
                             email = it
-                        },
-                        label = {
-                            Text(text = "Email")
                         }
                     )
-                    TextField(
+                    Spacer(modifier = Modifier.height(15.dp))
+//                    TextField(
+//                        value = password,
+//                        onValueChange = {
+//                            password = it
+//                        },
+//                        label = {
+//                            Text(text = "Password")
+//                        }
+//                    )
+                    DefaultTextField(
+                        modifier = Modifier,
                         value = password,
+                        label = "Password",
+                        icon = Icons.Outlined.Lock,
+                        hideText = true,
                         onValueChange = {
                             password = it
-                        },
-                        label = {
-                            Text(text = "Password")
                         }
                     )
-                    Button(
-                        onClick = {
+                    Spacer(modifier = Modifier.weight(1f))
 
-                        }
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(text = "Iniciar Sesion")
+                        Button(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .width(250.dp)
+                                .height(55.dp),
+                            colors = ButtonDefaults.buttonColors(Color.Black),
+                            onClick = {
+
+                            }
+                        ) {
+                            Text(text = "LOGIN", fontSize = 18.sp, color = Color.White)
+                        }
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Spacer(
                             modifier = Modifier
@@ -166,8 +219,10 @@ fun LoginScreen() {
                                 .background(Color.White)
                         )
                         Text(
+                            modifier = Modifier.padding(horizontal = 10.dp),
                             text = "O",
                             color = Color.White, fontSize = 17.sp
+
                         )
                         Spacer(
                             modifier = Modifier
@@ -175,7 +230,6 @@ fun LoginScreen() {
                                 .height(1.dp)
                                 .background(Color.White)
                         )
-
                     }
 
                     Row(
@@ -187,15 +241,15 @@ fun LoginScreen() {
                             color = Color.White,
                             fontSize = 17.sp
                         )
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = "Registrate",
                             color = Color.White,
                             fontSize = 17.sp,
                             fontWeight = FontWeight.Bold
                         )
-
-
                     }
+                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
         }
