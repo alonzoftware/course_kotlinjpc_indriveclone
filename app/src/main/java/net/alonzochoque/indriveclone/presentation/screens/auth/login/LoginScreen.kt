@@ -4,6 +4,7 @@ import android.R.attr.label
 import android.R.attr.padding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,11 +48,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import net.alonzochoque.indriveclone.R
 import net.alonzochoque.indriveclone.presentation.components.DefaultTextField
+import net.alonzochoque.indriveclone.presentation.navigation.screen.auth.AuthScreen
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navHostController: NavHostController) {
     var email by remember {
         mutableStateOf(value = "")
     }
@@ -93,6 +97,7 @@ fun LoginScreen() {
                     modifier = Modifier
                         .rotate(degrees = 90f)
                         .padding(top = 30.dp)
+                        .clickable { navHostController.navigate(route = AuthScreen.Register.route) }
                 )
                 Spacer(modifier = Modifier.height(200.dp))
             }
