@@ -251,7 +251,10 @@ fun LoginScreen(navHostController: NavHostController) {
                             text = "Registrate",
                             color = Color.White,
                             fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .clickable { navHostController.navigate(route = AuthScreen.Register.route) }
+
                         )
                     }
                     Spacer(modifier = Modifier.height(50.dp))

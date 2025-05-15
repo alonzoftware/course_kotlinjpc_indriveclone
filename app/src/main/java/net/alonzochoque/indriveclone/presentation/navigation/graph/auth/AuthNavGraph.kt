@@ -14,7 +14,7 @@ import net.alonzochoque.indriveclone.presentation.screens.auth.register.Register
 fun NavGraphBuilder.AuthNavGraph(navHostController: NavHostController) {
     navigation(
         route = Graph.AUTH,
-        startDestination = AuthScreen.Register.route
+        startDestination = AuthScreen.Login.route
     ) {
         composable(route = AuthScreen.Login.route) {
             LoginScreen(navHostController)

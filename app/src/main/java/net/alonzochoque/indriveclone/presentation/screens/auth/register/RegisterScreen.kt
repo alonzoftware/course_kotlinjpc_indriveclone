@@ -3,8 +3,6 @@ package net.alonzochoque.indriveclone.presentation.screens.auth.register
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import android.R.attr.label
-import android.R.attr.padding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,23 +16,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,26 +37,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import net.alonzochoque.indriveclone.R
-import net.alonzochoque.indriveclone.presentation.components.DefaultTextField
+import net.alonzochoque.indriveclone.presentation.components.DefaultButton
+import net.alonzochoque.indriveclone.presentation.components.DefaultOutlinedTextField
 import net.alonzochoque.indriveclone.presentation.navigation.screen.auth.AuthScreen
 
 @Composable
 fun RegisterScreen(navHostController: NavHostController) {
+    var name by remember {
+        mutableStateOf(value = "")
+    }
+    var lastname by remember {
+        mutableStateOf(value = "")
+    }
     var email by remember {
+        mutableStateOf(value = "")
+    }
+    var phone by remember {
         mutableStateOf(value = "")
     }
     var password by remember {
         mutableStateOf(value = "")
     }
+    var confirmPassword by remember {
+        mutableStateOf(value = "")
+    }
+
     Scaffold(
         contentWindowInsets = WindowInsets.navigationBars
     ) { innerPadding ->
@@ -90,7 +94,8 @@ fun RegisterScreen(navHostController: NavHostController) {
                     modifier = Modifier
                         .rotate(degrees = 90f)
                         .padding(top = 10.dp)
-                        .clickable { navHostController.navigate(route = AuthScreen.Login.route) }
+//                        .clickable { navHostController.navigate(route = AuthScreen.Login.route) }
+                        .clickable { navHostController.popBackStack() }
                 )
                 Spacer(modifier = Modifier.height(150.dp))
                 Text(
@@ -121,8 +126,10 @@ fun RegisterScreen(navHostController: NavHostController) {
             ) {
                 Column(
                     modifier = Modifier
-                        .statusBarsPadding()
-                        .padding(start = 25.dp)
+                        .statusBarsPadding(),
+
+//                        .padding(start = 25.dp)
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -133,14 +140,34 @@ fun RegisterScreen(navHostController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(150.dp)
+                                .size(100.dp)
                                 .align(Alignment.Center),
                             painter = painterResource(id = R.drawable.trip),
                             contentDescription = ""
                         )
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
-                    DefaultTextField(
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultOutlinedTextField(
+                        modifier = Modifier,
+                        value = name,
+                        label = "Nombre",
+                        icon = Icons.Outlined.Person,
+                        onValueChange = {
+                            name = it
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultOutlinedTextField(
+                        modifier = Modifier,
+                        value = lastname,
+                        label = "Apellido",
+                        icon = Icons.Outlined.Person,
+                        onValueChange = {
+                            lastname = it
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultOutlinedTextField(
                         modifier = Modifier,
                         value = email,
                         label = "Email",
@@ -151,7 +178,18 @@ fun RegisterScreen(navHostController: NavHostController) {
                         }
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    DefaultTextField(
+                    DefaultOutlinedTextField(
+                        modifier = Modifier,
+                        value = phone,
+                        label = "Telefono",
+                        icon = Icons.Outlined.Phone,
+                        keyboardType = KeyboardType.Number,
+                        onValueChange = {
+                            email = it
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultOutlinedTextField(
                         modifier = Modifier,
                         value = password,
                         label = "Password",
@@ -161,24 +199,23 @@ fun RegisterScreen(navHostController: NavHostController) {
                             password = it
                         }
                     )
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Button(
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .width(250.dp)
-                                .height(55.dp),
-                            colors = ButtonDefaults.buttonColors(Color.Black),
-                            onClick = {
-
-                            }
-                        ) {
-                            Text(text = "LOGIN", fontSize = 18.sp, color = Color.White)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultOutlinedTextField(
+                        modifier = Modifier,
+                        value = confirmPassword,
+                        label = "Confirmar Password",
+                        icon = Icons.Outlined.Lock,
+                        hideText = true,
+                        onValueChange = {
+                            confirmPassword = it
                         }
-                    }
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    DefaultButton(
+                        modifier = Modifier,
+                        text = "Crear Usuario",
+                        onClick = {/*TODO*/ }
+                    )
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -210,19 +247,22 @@ fun RegisterScreen(navHostController: NavHostController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "No tienes cuenta?",
+                            text = "Ya tienes cuenta?",
                             color = Color.White,
                             fontSize = 17.sp
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            text = "Registrate",
+                            text = "Inicia Sesion",
                             color = Color.White,
                             fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+//                                .clickable { navHostController.navigate(route = AuthScreen.Login.route) }
+                                .clickable { navHostController.popBackStack() }
                         )
                     }
-                    Spacer(modifier = Modifier.height(50.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }
