@@ -32,7 +32,7 @@ fun DefaultOutlinedTextField(
 ) {
     Box(
         modifier = Modifier
-            .height(55.dp)
+            .height(65.dp)
 //            .background(
 //                color = Color.White,
 //                shape = RoundedCornerShape(topStart = 15.dp, bottomEnd = 15.dp)

@@ -1,5 +1,7 @@
 package net.alonzochoque.indriveclone.presentation.screens.auth.register.components
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,47 +26,39 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import net.alonzochoque.indriveclone.R
 import net.alonzochoque.indriveclone.presentation.components.DefaultButton
 import net.alonzochoque.indriveclone.presentation.components.DefaultOutlinedTextField
+import net.alonzochoque.indriveclone.presentation.screens.auth.register.RegisterViewModel
 
 @Composable
-fun RegisterContent(navHostController: NavHostController, paddingValues: PaddingValues) {
-
-    var name by remember {
-        mutableStateOf(value = "")
+fun RegisterContent(
+    navHostController: NavHostController,
+    paddingValues: PaddingValues,
+    vm: RegisterViewModel = hiltViewModel()
+) {
+    val state = vm.state
+    val context = LocalContext.current
+    LaunchedEffect(key1 = vm.errorMessageSwitchTrigger) {
+        Log.d("RegisterContent", "Error: ${vm.errorMessage}")
+        if(vm.errorMessage.isNotEmpty()){
+            Toast.makeText(context,vm.errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
-    var lastname by remember {
-        mutableStateOf(value = "")
-    }
-    var email by remember {
-        mutableStateOf(value = "")
-    }
-    var phone by remember {
-        mutableStateOf(value = "")
-    }
-    var password by remember {
-        mutableStateOf(value = "")
-    }
-    var confirmPassword by remember {
-        mutableStateOf(value = "")
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -114,18 +108,15 @@ fun RegisterContent(navHostController: NavHostController, paddingValues: Padding
                         topStart = 35.dp,
                         bottomStart = 35.dp
                     )
-
                 )
         ) {
             Column(
                 modifier = Modifier
                     .statusBarsPadding(),
-
 //                        .padding(start = 25.dp)
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -142,74 +133,74 @@ fun RegisterContent(navHostController: NavHostController, paddingValues: Padding
                 Spacer(modifier = Modifier.height(15.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = name,
+                    value = state.name,
                     label = "Nombre",
                     icon = Icons.Outlined.Person,
                     onValueChange = {
-                        name = it
+                        vm.onNameInput(it)
                     }
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = lastname,
+                    value = state.lastname,
                     label = "Apellido",
                     icon = Icons.Outlined.Person,
                     onValueChange = {
-                        lastname = it
+                        vm.onLastnameInput(it)
                     }
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = email,
+                    value = state.email,
                     label = "Email",
                     icon = Icons.Outlined.Email,
                     keyboardType = KeyboardType.Email,
                     onValueChange = {
-                        email = it
+                        vm.onEmailInput(it)
                     }
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = phone,
+                    value = state.phone,
                     label = "Telefono",
                     icon = Icons.Outlined.Phone,
                     keyboardType = KeyboardType.Number,
                     onValueChange = {
-                        email = it
+                        vm.onPhoneInput(it)
                     }
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = password,
+                    value = state.password,
                     label = "Password",
                     icon = Icons.Outlined.Lock,
                     hideText = true,
                     onValueChange = {
-                        password = it
+                        vm.onPasswordInput(it)
                     }
                 )
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlinedTextField(
                     modifier = Modifier,
-                    value = confirmPassword,
+                    value = state.confirmPassword,
                     label = "Confirmar Password",
                     icon = Icons.Outlined.Lock,
                     hideText = true,
                     onValueChange = {
-                        confirmPassword = it
+                        vm.onConfirmPasswordInput(it)
                     }
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 DefaultButton(
                     modifier = Modifier,
                     text = "Crear Usuario",
-                    onClick = {/*TODO*/ }
+                    onClick = { vm.register() }
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -225,7 +216,6 @@ fun RegisterContent(navHostController: NavHostController, paddingValues: Padding
                         modifier = Modifier.padding(horizontal = 10.dp),
                         text = "O",
                         color = Color.White, fontSize = 17.sp
-
                     )
                     Spacer(
                         modifier = Modifier
@@ -234,7 +224,6 @@ fun RegisterContent(navHostController: NavHostController, paddingValues: Padding
                             .background(Color.White)
                     )
                 }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -259,6 +248,5 @@ fun RegisterContent(navHostController: NavHostController, paddingValues: Padding
             }
         }
     }
-
-
 }
+
